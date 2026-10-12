@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patna-7 | Admin Command Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <!-- 1. ADMIN LOGIN VIEW (Shown if not logged in) -->
+    <div id="admin-login-view" class="min-h-screen flex items-center justify-center p-4 bg-slate-900">
+        <div class="w-full max-w-md bg-slate-800 border border-slate-700 rounded-3xl p-8 shadow-2xl text-white">
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-shield-halved text-white text-2xl"></i>
+                </div>
+                <h2 class="text-xl font-black tracking-wide">MASTER ADMIN LOGIN</h2>
+                <p class="text-xs text-slate-400 mt-1">GP Patna-7 Central Portal Control</p>
+            </div>
+
+            <div id="login-alert" class="hidden mb-4 p-3 rounded-xl text-xs font-semibold text-center border"></div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 uppercase block mb-1">Admin Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
+                            <i class="fa-solid fa-envelope text-xs"></i>
+                        </span>
+                        <input type="email" id="admin-email" value="admin@gpp7.in" required class="w-full pl-10 pr-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 uppercase block mb-1">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
+                            <i class="fa-solid fa-key text-xs"></i>
+                        </span>
+                        <input type="password" id="admin-pass" placeholder="••••••••" required class="w-full pl-10 pr-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <button type="submit" id="admin-login-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Authorize & Enter Dashboard
+                </button>
+            </form>
+
+            <div class="mt-6 text-center border-t border-slate-700/60 pt-4">
+                <a href="index.html" class="text-xs text-slate-400 hover:text-indigo-400 transition-all flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i> Back to Main Portal
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN ADMIN DASHBOARD VIEW (Shown only after verification) -->
+    <div id="admin-dashboard-view" class="hidden min-h-screen">
+        
+        <!-- NAVIGATION -->
+        <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-bold text-white tracking-wide leading-none">GP PATNA-7</h1>
+                            <span class="text-[10px] text-indigo-400 font-bold tracking-wider uppercase">Master Console</span>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT ACTIONS -->
+                    <div class="flex items-center gap-3">
+                        <!-- FACULTY APPROVAL BUTTON TO THE LEFT OF SECURE EXIT -->
+                        <button onclick="openApprovalModal()" class="px-3.5 py-2 text-xs font-bold text-indigo-300 bg-indigo-900/60 hover:bg-indigo-800/80 rounded-xl transition-all border border-indigo-700/60 flex items-center gap-2 cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-user-check text-indigo-400"></i>
+                            <span>Faculty Approvals</span>
+                            <span id="pending-badge" class="hidden bg-rose-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black animate-pulse">0</span>
+                        </button>
+
+                        <!-- SECURE EXIT BUTTON -->
+                        <button onclick="logoutAdmin()" class="px-3.5 py-2 text-xs font-bold text-rose-400 bg-rose-950/40 hover:bg-rose-900/60 rounded-xl transition-all border border-rose-800/60 flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-power-off"></i> Secure Exit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- DASHBOARD BODY -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            
+            <!-- STATS COUNTERS -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Total Students</p>
+                        <h3 id="stat-students" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Active Faculty</p>
+                        <h3 id="stat-faculties" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Attendance Logs</p>
+                        <h3 id="stat-logs" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Pending Approvals</p>
+                        <h3 id="stat-pending" class="text-2xl font-black text-amber-600 mt-1">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FACULTIES TABLE -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">
+                        <i class="fa-solid fa-user-tie text-emerald-600 mr-2"></i>Faculty Records & Approval Status
+                    </h3>
+                    <span id="faculty-count-badge" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">0 Faculty</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white border-b border-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                <th class="py-3 px-5">Faculty</th>
+                                <th class="py-3 px-5">Code</th>
+                                <th class="py-3 px-5">Department</th>
+                                <th class="py-3 px-5">Cabin</th>
+                                <th class="py-3 px-5">Approval</th>
+                                <th class="py-3 px-5">Live Status</th>
+                                <th class="py-3 px-5 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="faculties-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STUDENTS TABLE -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">
+                        <i class="fa-solid fa-graduation-cap text-blue-600 mr-2"></i>Registered Students Directory
+                    </h3>
+                    <span id="students-count-badge" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">0 Students</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white border-b border-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                <th class="py-3 px-5">Student Name</th>
+                                <th class="py-3 px-5">Enrollment No</th>
+                                <th class="py-3 px-5">Branch</th>
+                                <th class="py-3 px-5">Semester</th>
+                                <th class="py-3 px-5 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AUDIT LOGS TABLE -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">
+                        <i class="fa-solid fa-satellite-dish text-indigo-600 mr-2"></i>Recent Verified Proximity Logs
+                    </h3>
+                </div>
+                <div class="overflow-x-auto max-h-80 overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white border-b border-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-wider sticky top-0">
+                                <th class="py-3 px-5">Student</th>
+                                <th class="py-3 px-5">Enrollment</th>
+                                <th class="py-3 px-5">Faculty</th>
+                                <th class="py-3 px-5">Timestamp</th>
+                                <th class="py-3 px-5">Proximity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- APPROVAL POPUP MODAL -->
+        <div id="approval-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden">
+                
+                <div class="p-5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider">Faculty Registration Approvals</h3>
+                            <p class="text-xs text-slate-500">Allow login permission or reject registration with details erase.</p>
+                        </div>
+                    </div>
+                    <button onclick="closeApprovalModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-xl text-lg cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 max-h-[60vh] overflow-y-auto space-y-3">
+                    <div id="pending-faculties-container" class="space-y-3">
+                        <p class="text-center py-8 text-xs text-slate-400 font-medium">Checking pending registrations...</p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                    <button onclick="closeApprovalModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer">
+                        Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+
+        window.onload = function() {
+            checkExistingAdminAuth();
+        };
+
+        // CHECK IF ALREADY LOGGED IN
+        function checkExistingAdminAuth() {
+            const token = localStorage.getItem('adminToken');
+            const user = JSON.parse(localStorage.getItem('adminUser') || "null");
+
+            if (token && user && user.role === 'admin') {
+                showDashboard();
+            } else {
+                showLoginView();
+            }
+        }
+
+        function showLoginView() {
+            document.getElementById('admin-login-view').classList.remove('hidden');
+            document.getElementById('admin-dashboard-view').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('admin-login-view').classList.add('hidden');
+            document.getElementById('admin-dashboard-view').classList.remove('hidden');
+            loadAdminData();
+            loadPendingFaculties();
+            setInterval(loadAdminData, 10000);
+            setInterval(loadPendingFaculties, 8000);
+        }
+
+        // HANDLE LOGIN
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value.trim();
+            const password = document.getElementById('admin-pass').value.trim();
+            const alertBox = document.getElementById('login-alert');
+            const btn = document.getElementById('admin-login-btn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...`;
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: email, password: password, role: 'admin' })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.token) {
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminUser', JSON.stringify(data.user));
+                    showDashboard();
+                } else {
+                    alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center border bg-rose-500/10 border-rose-500/30 text-rose-400";
+                    alertBox.innerText = data.message || "Invalid Admin Credentials";
+                    alertBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center border bg-rose-500/10 border-rose-500/30 text-rose-400";
+                alertBox.innerText = "Cannot connect to server (127.0.0.1:5000)";
+                alertBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Authorize & Enter Dashboard`;
+            }
+        }
+
+        // LOAD DATA
+        async function loadAdminData() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/admin/data`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    renderDashboard(data);
+                }
+            } catch (err) {
+                console.error("Admin data load error:", err);
+            }
+        }
+
+        function renderDashboard(data) {
+            document.getElementById('stat-students').innerText = data.students.length;
+            document.getElementById('stat-faculties').innerText = data.faculties.filter(f => f.is_approved).length;
+            document.getElementById('stat-logs').innerText = data.logs.length;
+
+            document.getElementById('faculty-count-badge').innerText = `${data.faculties.length} Records`;
+            document.getElementById('students-count-badge').innerText = `${data.students.length} Students`;
+
+            // Faculty Table
+            const fTbody = document.getElementById('faculties-table-body');
+            fTbody.innerHTML = "";
+            data.faculties.forEach(f => {
+                const approvalBadge = f.is_approved 
+                    ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-bold text-[10px]">✔ Approved</span>`
+                    : `<span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-bold text-[10px]">⏳ Pending</span>`;
+
+                fTbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100">
+                        <td class="py-3 px-5 font-bold text-slate-800">${f.name} <span class="block text-[10px] text-slate-400 font-normal">${f.email}</span></td>
+                        <td class="py-3 px-5 font-mono text-indigo-600 font-bold">${f.faculty_code}</td>
+                        <td class="py-3 px-5 text-slate-600">${f.department} (${f.designation})</td>
+                        <td class="py-3 px-5 text-slate-500">${f.cabin_number}</td>
+                        <td class="py-3 px-5">${approvalBadge}</td>
+                        <td class="py-3 px-5 font-semibold text-slate-700">${f.current_status}</td>
+                        <td class="py-3 px-5 text-right">
+                            <button onclick="deleteUserAccount(${f.user_id})" class="text-rose-500 hover:text-rose-700 p-1.5 hover:bg-rose-50 rounded-lg transition-all cursor-pointer">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Student Table
+            const sTbody = document.getElementById('students-table-body');
+            sTbody.innerHTML = "";
+            data.students.forEach(s => {
+                sTbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100">
+                        <td class="py-3 px-5 font-bold text-slate-800">${s.name} <span class="block text-[10px] text-slate-400 font-normal">${s.email}</span></td>
+                        <td class="py-3 px-5 font-mono text-blue-600 font-bold">${s.enrollment_number}</td>
+                        <td class="py-3 px-5 text-slate-600">${s.branch}</td>
+                        <td class="py-3 px-5 font-bold text-slate-700">${s.semester}th Sem</td>
+                        <td class="py-3 px-5 text-right">
+                            <button onclick="deleteUserAccount(${s.user_id})" class="text-rose-500 hover:text-rose-700 p-1.5 hover:bg-rose-50 rounded-lg transition-all cursor-pointer">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Attendance Logs Table
+            const lTbody = document.getElementById('logs-table-body');
+            lTbody.innerHTML = "";
+            data.logs.forEach(l => {
+                lTbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100">
+                        <td class="py-3 px-5 font-bold text-slate-800">${l.student_name} (${l.branch})</td>
+                        <td class="py-3 px-5 font-mono text-blue-600">${l.enrollment_number}</td>
+                        <td class="py-3 px-5 text-slate-600">${l.faculty_name}</td>
+                        <td class="py-3 px-5 text-slate-400 font-mono text-[11px]">${l.timestamp}</td>
+                        <td class="py-3 px-5"><span class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded font-mono font-bold">${l.recorded_distance_m}m</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // LOAD PENDING FACULTY APPROVALS
+        async function loadPendingFaculties() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/admin/pending-faculties`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok && data.pending_faculties) {
+                    const count = data.pending_faculties.length;
+                    document.getElementById('stat-pending').innerText = count;
+                    const badge = document.getElementById('pending-badge');
+
+                    if (count > 0) {
+                        badge.innerText = count;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+
+                    const container = document.getElementById('pending-faculties-container');
+                    if (count === 0) {
+                        container.innerHTML = `
+                            <div class="text-center py-8 text-slate-400">
+                                <i class="fa-solid fa-circle-check text-emerald-500 text-3xl mb-2"></i>
+                                <p class="text-xs font-semibold">Sabhi faculty registrations approved hain. Koi pending request nahi hai.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let html = "";
+                    data.pending_faculties.forEach(f => {
+                        html += `
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-slate-800 text-xs">${f.name}</h4>
+                                        <span class="text-[10px] font-mono text-indigo-600 bg-white border border-slate-200 px-1.5 py-0.2 rounded font-bold">${f.faculty_code}</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">${f.email} • ${f.department} (${f.designation})</p>
+                                    <p class="text-[10px] text-slate-400 mt-0.5"><i class="fa-solid fa-door-open mr-1"></i>Cabin: ${f.cabin_number} • Applied: ${f.created_at}</p>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <button onclick="approveFaculty(${f.faculty_id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer flex items-center gap-1">
+                                        <i class="fa-solid fa-check"></i> Allow
+                                    </button>
+                                    <button onclick="rejectFaculty(${f.faculty_id})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 font-bold text-xs rounded-xl transition-all cursor-pointer flex items-center gap-1">
+                                        <i class="fa-solid fa-trash-can"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                }
+            } catch (err) {
+                console.error("Pending faculty fetch error:", err);
+            }
+        }
+
+        async function approveFaculty(facultyId) {
+            const token = localStorage.getItem('adminToken');
+            try {
+                const res = await fetch(`${API_URL}/admin/approve-faculty/${facultyId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadPendingFaculties();
+                    loadAdminData();
+                } else {
+                    alert(data.message || "Approval failed");
+                }
+            } catch (err) {
+                alert("Server error during approval");
+            }
+        }
+
+        async function rejectFaculty(facultyId) {
+            if (!confirm("Are you sure? This faculty registration will be permanently cancelled and deleted.")) return;
+            const token = localStorage.getItem('adminToken');
+            try {
+                const res = await fetch(`${API_URL}/admin/reject-faculty/${facultyId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadPendingFaculties();
+                    loadAdminData();
+                } else {
+                    alert(data.message || "Cancellation failed");
+                }
+            } catch (err) {
+                alert("Server error during cancellation");
+            }
+        }
+
+        async function deleteUserAccount(userId) {
+            if (!confirm("Are you sure you want to delete this user and all associated records?")) return;
+            const token = localStorage.getItem('adminToken');
+            try {
+                const res = await fetch(`${API_URL}/admin/delete-user/${userId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadAdminData();
+                } else {
+                    alert(data.message || "Delete failed");
+                }
+            } catch (err) {
+                alert("Server communication error");
+            }
+        }
+
+        function openApprovalModal() {
+            document.getElementById('approval-modal').classList.remove('hidden');
+            loadPendingFaculties();
+        }
+
+        function closeApprovalModal() {
+            document.getElementById('approval-modal').classList.add('hidden');
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            showLoginView();
+        }
+    </script>
+</body>
+</html>

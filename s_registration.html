@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patna-7 | Student Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 font-sans text-slate-100">
+
+    <div class="bg-slate-800 p-8 rounded-3xl shadow-2xl w-full max-w-lg border border-slate-700">
+        <div class="mb-6">
+            <a href="index.html" class="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 mb-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Login
+            </a>
+            <h1 class="text-2xl font-black text-white">Student Enrollment Registration</h1>
+            <p class="text-xs text-slate-400 mt-1">Apna account banayein taaki faculty availability aur geofenced attendance track kar sakein.</p>
+        </div>
+
+        <div id="alert-box" class="hidden mb-4 p-3 rounded-xl text-xs font-bold border"></div>
+
+        <form id="student-reg-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Full Student Name</label>
+                <input type="text" id="s-name" placeholder="e.g., Rohit Kumar" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Enrollment Number</label>
+                    <input type="text" id="s-enroll" placeholder="e.g., 2210107" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Semester</label>
+                    <select id="s-sem" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+                        <option value="" disabled selected>Select Sem</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Branch / Department</label>
+                <select id="s-branch" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+                    <option value="" disabled selected>Select Branch</option>
+                    <option value="Computer Science & Engg.">Computer Science & Engg.</option>
+                    <option value="Civil Engg.">Civil Engg.</option>
+                    <option value="Mechanical Engg.">Mechanical Engg.</option>
+                    <option value="Electrical Engg.">Electrical Engg.</option>
+                    <option value="Electronics Engg.">Electronics Engg.</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Email ID</label>
+                <input type="email" id="s-email" placeholder="student@example.com" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Password</label>
+                <input type="password" id="s-pass" minlength="6" placeholder="Min 6 characters" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all text-sm mt-3 cursor-pointer">
+                Complete Student Registration
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+
+        document.getElementById('student-reg-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const alertBox = document.getElementById('alert-box');
+
+            const payload = {
+                name: document.getElementById('s-name').value.trim(),
+                enrollmentNumber: document.getElementById('s-enroll').value.trim(),
+                branch: document.getElementById('s-branch').value,
+                semester: document.getElementById('s-sem').value,
+                email: document.getElementById('s-email').value.trim(),
+                password: document.getElementById('s-pass').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/register/student`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alertBox.className = "mb-4 p-3 rounded-xl text-xs font-bold border bg-emerald-950/60 border-emerald-800 text-emerald-300";
+                    alertBox.innerText = "Registration successful! Redirecting to login...";
+                    alertBox.classList.remove('hidden');
+                    setTimeout(() => window.location.href = "index.html", 1500);
+                } else {
+                    alertBox.className = "mb-4 p-3 rounded-xl text-xs font-bold border bg-rose-950/60 border-rose-800 text-rose-300";
+                    alertBox.innerText = data.message || "Registration failed!";
+                    alertBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                alertBox.className = "mb-4 p-3 rounded-xl text-xs font-bold border bg-rose-950/60 border-rose-800 text-rose-300";
+                alertBox.innerText = "Error: Python backend server is unreachable.";
+                alertBox.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patna-7 | Smart Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .portal-container { background-color: #ffffff; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); width: 100%; max-width: 950px; display: flex; flex-direction: row; overflow: hidden; min-height: 550px; }
+        .info-panel { background: linear-gradient(135deg, #1d4ed8, #312e81); color: #ffffff; padding: 40px; width: 40%; display: flex; flex-direction: column; justify-content: space-between; }
+        .info-content h3 { font-size: 26px; margin-bottom: 12px; line-height: 1.2; font-weight: 800; }
+        .info-content p { font-size: 13px; color: #e0e7ff; line-height: 1.5; margin-bottom: 20px; }
+        .features-list div { font-size: 13px; color: #bfdbfe; margin-bottom: 8px; font-weight: 500; }
+        .info-footer { font-size: 12px; color: #93c5fd; display: flex; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 15px; }
+        .info-footer a { color: #ffffff; text-decoration: none; font-weight: 600; }
+        .form-panel { padding: 40px; width: 60%; display: flex; flex-direction: column; justify-content: center; }
+        .notice-box { background-color: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 12px; border-radius: 10px; font-size: 12px; margin-bottom: 20px; font-weight: 600; }
+        .welcome-text h2 { font-size: 24px; color: #1e293b; margin-bottom: 4px; font-weight: 800; }
+        .welcome-text p { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+        .tab-container { display: flex; background-color: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; background: none; border: none; font-size: 13px; font-weight: 700; color: #64748b; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .tab-btn.active-student { background-color: #ffffff; color: #2563eb; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+        .tab-btn.active-faculty { background-color: #ffffff; color: #059669; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #475569; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .input-wrapper { position: relative; }
+        .input-wrapper input { width: 100%; padding: 11px 14px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; color: #1e293b; outline: none; }
+        .input-wrapper input:focus { border-color: #2563eb; background-color: #ffffff; }
+        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer; font-size: 11px; font-weight: 700; }
+        .submit-btn { width: 100%; padding: 13px; border: none; border-radius: 10px; color: white; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; margin-top: 6px; }
+        .student-btn { background-color: #2563eb; }
+        .student-btn:hover { background-color: #1d4ed8; }
+        .faculty-btn { background-color: #059669; }
+        .faculty-btn:hover { background-color: #047857; }
+        .form-footer { text-align: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #64748b; }
+        .form-footer a { font-weight: 700; text-decoration: none; }
+        .hidden { display: none !important; }
+        .alert-message { margin-bottom: 15px; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid; }
+        .alert-success { background-color: #d1fae5; border-color: #a7f3d0; color: #065f46; }
+        .alert-error { background-color: #ffe4e6; border-color: #fecdd3; color: #9f1239; }
+        @media (max-width: 768px) {
+            .portal-container { flex-direction: column; }
+            .info-panel, .form-panel { width: 100%; padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-container">
+        <div class="info-panel">
+            <div>
+                <h2 style="font-size: 20px; font-weight: 900; letter-spacing: 1px;">GP PATNA-7</h2>
+                <span style="font-size: 11px; color: #bfdbfe; letter-spacing: 2px; text-transform: uppercase;">Smart Radar Terminal</span>
+            </div>
+
+            <div class="info-content">
+                <h3>Smart Faculty Tracking Portal</h3>
+                <p>Real-time me check karein apne professors ka status—cabin me free hain, class me hain, ya meeting me.</p>
+                <div class="features-list">
+                    <div>✓ Realtime Status Radar</div>
+                    <div>✓ 50m Smart Geofenced Attendance</div>
+                    <div>✓ Zero-Trust Encrypted Storage</div>
+                </div>
+            </div>
+
+            <div class="info-footer">
+                <span>© 2026 GP Patna-7</span>
+                <a href="admin.html">Admin Portal →</a>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <div class="notice-box">
+                <strong>Notice:</strong> Faculty live availability is active between 10:00 AM to 05:00 PM.
+            </div>
+
+            <div class="welcome-text">
+                <h2>Welcome Back!</h2>
+                <p>Apna role select karke secure credentials se login karein.</p>
+            </div>
+
+            <div id="login-alert" class="hidden"></div>
+
+            <div class="tab-container">
+                <button onclick="switchTab('student')" id="btn-student" class="tab-btn active-student">Student Center</button>
+                <button onclick="switchTab('faculty')" id="btn-faculty" class="tab-btn">Faculty Arena</button>
+            </div>
+
+            <!-- STUDENT LOGIN -->
+            <form id="student-form">
+                <div class="form-group">
+                    <label>Enrollment / Roll Number</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="student-enroll" placeholder="e.g., 2210107" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="student-pass" placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword('student-pass', this)" class="toggle-password">SHOW</button>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn student-btn">Access Student Dashboard →</button>
+                <div class="form-footer">
+                    Naye student hain? <a href="s_registration.html" style="color: #2563eb;">Create an Account</a>
+                </div>
+            </form>
+
+            <!-- FACULTY LOGIN -->
+            <form id="faculty-form" class="hidden">
+                <div class="form-group">
+                    <label>Official Email ID</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="faculty-email" placeholder="prof.name@gpp7.in" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Security Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="faculty-pass" placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword('faculty-pass', this)" class="toggle-password">SHOW</button>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn faculty-btn">Verify & Enter Faculty Arena ⚡</button>
+                <div class="form-footer">
+                    Naye Faculty hain? <a href="f_Registration.html" style="color: #059669;">Request Registration</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+
+        function switchTab(role) {
+            const sf = document.getElementById('student-form');
+            const ff = document.getElementById('faculty-form');
+            const bs = document.getElementById('btn-student');
+            const bf = document.getElementById('btn-faculty');
+            hideAlert();
+
+            if (role === 'student') {
+                sf.classList.remove('hidden');
+                ff.classList.add('hidden');
+                bs.className = "tab-btn active-student";
+                bf.className = "tab-btn";
+            } else {
+                ff.classList.remove('hidden');
+                sf.classList.add('hidden');
+                bf.className = "tab-btn active-faculty";
+                bs.className = "tab-btn";
+            }
+        }
+
+        function togglePassword(id, btn) {
+            const f = document.getElementById(id);
+            if (f.type === "password") {
+                f.type = "text";
+                btn.innerText = "HIDE";
+            } else {
+                f.type = "password";
+                btn.innerText = "SHOW";
+            }
+        }
+
+        function showAlert(msg, type) {
+            const b = document.getElementById('login-alert');
+            b.innerText = msg;
+            b.className = "alert-message " + (type === 'error' ? "alert-error" : "alert-success");
+            b.classList.remove('hidden');
+        }
+
+        function hideAlert() {
+            document.getElementById('login-alert').classList.add('hidden');
+        }
+
+        // Student Form Submit
+        document.getElementById('student-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            hideAlert();
+            const identifier = document.getElementById('student-enroll').value.trim();
+            const password = document.getElementById('student-pass').value;
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier, password, role: 'student' })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showAlert("Authentication successful! Redirecting...", "success");
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    setTimeout(() => window.location.href = "s_dashboard.html", 1000);
+                } else {
+                    showAlert(data.message || "Invalid Enrollment Number or Password", "error");
+                }
+            } catch (err) {
+                showAlert("Cannot connect to Python Server! Check app.py.", "error");
+            }
+        });
+
+        // Faculty Form Submit
+        document.getElementById('faculty-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            hideAlert();
+            const identifier = document.getElementById('faculty-email').value.trim();
+            const password = document.getElementById('faculty-pass').value;
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier, password, role: 'faculty' })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showAlert("Verification complete! Redirecting...", "success");
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    setTimeout(() => window.location.href = "f_dashboard.html", 1000);
+                } else {
+                    showAlert(data.message || "Invalid Email or Password", "error");
+                }
+            } catch (err) {
+                showAlert("Cannot connect to Python Server! Check app.py.", "error");
+            }
+        });
+    </script>
+</body>
+</html>

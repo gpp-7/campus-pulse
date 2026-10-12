@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patna-7 | Student Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-slate-800 leading-none">GP PATNA-7</h1>
+                        <span class="text-[10px] text-blue-600 font-bold tracking-wider uppercase">Student Portal</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p id="student-profile-name" class="text-sm font-bold text-slate-800">Student Loading...</p>
+                        <p id="student-profile-roll" class="text-[11px] text-slate-500 font-medium">Enroll: ---</p>
+                    </div>
+                    <button onclick="logout()" class="px-3.5 py-2 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-200 cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket mr-1.5"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-900 rounded-3xl p-6 md:p-8 text-white shadow-xl mb-6">
+            <h2 id="welcome-msg" class="text-2xl md:text-3xl font-extrabold tracking-tight">Student Dashboard</h2>
+            <p class="text-blue-100/80 text-sm mt-1">Live objective test series solve karein, automatic attendance mark karein aur notes access karein.</p>
+        </div>
+
+        <!-- NEW: OBJECTIVE TEST SERIES SECTION (JUST ABOVE ATTENDANCE & BATCH INFO) -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 mb-4 border-b border-slate-100 gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center text-lg shadow-sm">
+                        <i class="fa-solid fa-file-circle-question"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-800">Subject-Wise Objective Test Series</h3>
+                        <p class="text-xs text-slate-500">Apna subject select karein aur Unit 1 se Unit 6 tak ke practice MCQs solve karein.</p>
+                    </div>
+                </div>
+                <span class="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                    <i class="fa-solid fa-bolt mr-1"></i>Exam Prep Module
+                </span>
+            </div>
+
+            <!-- 4 SUBJECT CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- 1. DCCN -->
+                <button onclick="openUnitSelector('Data Communication and Computer Network', 'DCCN')" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50/50 hover:border-indigo-400 text-left transition-all cursor-pointer group shadow-xs">
+                    <div class="w-9 h-9 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-base mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-indigo-600">Data Communication & Computer Network</h4>
+                    <span class="text-[10px] text-slate-400 mt-2 block font-medium">Unit 1 - Unit 6 Tests <i class="fa-solid fa-arrow-right text-[9px] ml-1"></i></span>
+                </button>
+
+                <!-- 2. Software Engineering -->
+                <button onclick="openUnitSelector('Software Engineering', 'SE')" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50/50 hover:border-indigo-400 text-left transition-all cursor-pointer group shadow-xs">
+                    <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-base mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-blue-600">Software Engineering</h4>
+                    <span class="text-[10px] text-slate-400 mt-2 block font-medium">Unit 1 - Unit 6 Tests <i class="fa-solid fa-arrow-right text-[9px] ml-1"></i></span>
+                </button>
+
+                <!-- 3. Data Science: DW & DM -->
+                <button onclick="openUnitSelector('Data Science: Data Warehousing and Data Mining', 'DWDM')" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50/50 hover:border-indigo-400 text-left transition-all cursor-pointer group shadow-xs">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-base mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-emerald-600">Data Science: DW & Data Mining</h4>
+                    <span class="text-[10px] text-slate-400 mt-2 block font-medium">Unit 1 - Unit 6 Tests <i class="fa-solid fa-arrow-right text-[9px] ml-1"></i></span>
+                </button>
+
+                <!-- 4. Internet of Things (IoT) -->
+                <button onclick="openUnitSelector('Internet of Things', 'IOT')" class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50/50 hover:border-indigo-400 text-left transition-all cursor-pointer group shadow-xs">
+                    <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-base mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-amber-600">Internet of Things (IoT)</h4>
+                    <span class="text-[10px] text-slate-400 mt-2 block font-medium">Unit 1 - Unit 6 Tests <i class="fa-solid fa-arrow-right text-[9px] ml-1"></i></span>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- AUTO-DETECT ATTENDANCE TERMINAL (NO CODE NEEDED) -->
+            <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">
+                        <i class="fa-solid fa-satellite-dish text-blue-600 mr-2"></i>Live Smart Attendance Terminal
+                    </h3>
+                    <span id="terminal-live-badge" class="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded border border-slate-200">
+                        ⚪ Scanning...
+                    </span>
+                </div>
+
+                <div id="student-attendance-alert" class="hidden mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center"></div>
+
+                <!-- DYNAMIC SESSION AREA -->
+                <div id="attendance-session-state" class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-radar"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-600">No active attendance session right now</p>
+                            <p class="text-[10px] text-slate-400">Jaise hi teacher attendance chalu karenge, yahan Present button active ho jayega.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STUDENT INFO SUMMARY -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 border-b border-slate-100 pb-2">
+                    <i class="fa-solid fa-id-card-clip text-indigo-600 mr-2"></i>My Batch Info
+                </h3>
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between pb-1.5 border-b border-slate-100">
+                        <span class="text-slate-400">Branch:</span>
+                        <span id="stud-branch-val" class="font-bold text-slate-700">---</span>
+                    </div>
+                    <div class="flex justify-between pb-1.5 border-b border-slate-100">
+                        <span class="text-slate-400">Semester:</span>
+                        <span id="stud-sem-val" class="font-bold text-slate-700">---</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Status:</span>
+                        <span class="font-bold text-emerald-600">Active Student</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 EQUAL COLUMNS: ASSIGNED WORK (LEFT) & REPOSITORY NOTES (RIGHT) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            <!-- LEFT SECTION: ASSIGNED PRACTICALS & PROJECTS -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">Assigned Practicals & Projects</h3>
+                            <p class="text-[10px] text-slate-400">Assigned for your branch & semester</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="loadAssignments()" title="Refresh" class="text-xs bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 px-2 py-1 rounded-lg cursor-pointer transition-all">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                        <span id="assignment-count" class="text-[10px] bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded font-bold">0 Pending</span>
+                    </div>
+                </div>
+
+                <div id="assignments-container" class="p-3.5 h-[210px] overflow-y-auto space-y-2.5">
+                    <div class="text-center py-6 text-slate-400 text-xs font-medium">
+                        <i class="fa-solid fa-spinner fa-spin text-indigo-500 mb-2 text-lg"></i>
+                        <p>Loading assignments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SECTION: BRANCH & SEMESTER REPOSITORY NOTES -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm font-bold">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">Subject Notes & Material</h3>
+                            <p id="notes-target-label" class="text-[10px] text-slate-400">Folder: notes/branch/sem</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="loadNotes()" title="Refresh Notes" class="text-xs bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 px-2 py-1 rounded-lg cursor-pointer transition-all">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                        <span id="notes-count" class="text-[10px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-2 py-0.5 rounded font-bold">0 Files</span>
+                    </div>
+                </div>
+
+                <div id="notes-container" class="p-3.5 h-[210px] overflow-y-auto space-y-2">
+                    <div class="text-center py-6 text-slate-400 text-xs font-medium">
+                        <i class="fa-solid fa-spinner fa-spin text-emerald-500 mb-2 text-lg"></i>
+                        <p>Loading subject notes...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SEARCH AND FILTER -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full md:max-w-md">
+                <input type="text" id="search-input" oninput="filterFaculty()" placeholder="Search Teacher by Name..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="w-full md:w-64">
+                <select id="dept-filter" onchange="filterFaculty()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-blue-500 cursor-pointer font-medium">
+                    <option value="ALL">All Departments</option>
+                    <option value="Computer Science & Engg.">Computer Science & Engg.</option>
+                    <option value="Civil Engg.">Civil Engg.</option>
+                    <option value="Mechanical Engg.">Mechanical Engg.</option>
+                    <option value="Electrical Engg.">Electrical Engg.</option>
+                    <option value="Electronics Engg.">Electronics Engg.</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- FACULTY DIRECTORY -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600"><i class="fa-solid fa-clipboard-list text-blue-600 mr-2"></i>Faculty Live Directory</h3>
+                <span id="faculty-count" class="text-xs bg-blue-50 border border-blue-200 text-blue-700 px-2.5 py-1 rounded-lg font-bold">0 Found</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100/70 border-b border-slate-200 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                            <th class="py-4 px-6">Faculty Name</th>
+                            <th class="py-4 px-6">Department</th>
+                            <th class="py-4 px-6">Cabin No.</th>
+                            <th class="py-4 px-6">Live Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="faculty-table-body" class="divide-y divide-slate-100 text-sm text-slate-700 font-medium"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL 1: UNIT SELECTOR MODAL (UNIT 1 TO UNIT 6) -->
+    <div id="unit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden animate-scale-up">
+            <div class="p-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div>
+                    <span id="modal-sub-badge" class="text-[10px] font-bold uppercase bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">DCCN</span>
+                    <h3 id="modal-sub-title" class="text-sm font-black text-slate-800 mt-1">Data Communication & Computer Network</h3>
+                </div>
+                <button onclick="closeUnitModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Choose Unit Test:</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <button onclick="startQuiz(1)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 1</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                    <button onclick="startQuiz(2)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 2</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                    <button onclick="startQuiz(3)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 3</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                    <button onclick="startQuiz(4)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 4</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                    <button onclick="startQuiz(5)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 5</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                    <button onclick="startQuiz(6)" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 text-slate-800 text-left transition-all cursor-pointer font-bold text-xs flex flex-col justify-between h-20 shadow-xs">
+                        <span>Unit 6</span>
+                        <span class="text-[10px] opacity-80 font-normal">Objective MCQs</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: INTERACTIVE QUIZ MODAL -->
+    <div id="quiz-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden animate-scale-up">
+            <div class="p-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div>
+                    <span id="quiz-header-badge" class="text-[10px] font-bold uppercase bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">DCCN - Unit 1</span>
+                    <h3 id="quiz-header-title" class="text-sm font-black text-slate-800 mt-1">Objective Test Series</h3>
+                </div>
+                <button onclick="closeQuizModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="quiz-body" class="p-6 max-h-[65vh] overflow-y-auto space-y-4">
+                <!-- Dynamically loaded questions -->
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                <span id="quiz-score-preview" class="text-xs font-bold text-slate-500">Attempt all questions</span>
+                <button id="quiz-submit-btn" onclick="submitQuiz()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+                    Submit Test & View Score
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+        let allFaculties = [];
+        let currentActiveSession = null;
+
+        // TEST SERIES STATE
+        let selectedSubject = "";
+        let selectedSubjectCode = "";
+        let selectedUnit = 1;
+        let activeQuestions = [];
+        let userAnswers = {};
+
+        // SAMPLE OBJECTIVE QUESTION BANK (Expandable)
+        const QUESTION_BANK = {
+            "DCCN": {
+                1: [
+                    { q: "Which OSI layer is responsible for end-to-end process communication?", options: ["Physical Layer", "Network Layer", "Transport Layer", "Data Link Layer"], ans: 2 },
+                    { q: "What is the standard size of an IPv4 address?", options: ["16 bits", "32 bits", "64 bits", "128 bits"], ans: 1 },
+                    { q: "Which topology requires a central hub/switch?", options: ["Ring", "Mesh", "Star", "Bus"], ans: 2 }
+                ],
+                default: [
+                    { q: "What protocol is used to securely browse the internet?", options: ["FTP", "HTTPS", "HTTP", "Telnet"], ans: 1 },
+                    { q: "Which device operates at the Data Link layer?", options: ["Hub", "Switch", "Router", "Repeater"], ans: 1 },
+                    { q: "Which transmission media has the highest transmission bandwidth?", options: ["Twisted Pair", "Coaxial Cable", "Optical Fiber", "Microwave"], ans: 2 }
+                ]
+            },
+            "SE": {
+                default: [
+                    { q: "Which model is also known as the linear-sequential life cycle model?", options: ["Spiral Model", "Waterfall Model", "Agile Model", "RAD Model"], ans: 1 },
+                    { q: "Black box testing is also known as?", options: ["Behavioral Testing", "Structural Testing", "Glass box testing", "Unit testing"], ans: 0 },
+                    { q: "What does SRS stand for in Software Engineering?", options: ["Software Requirement Specification", "Software Resource Solution", "System Research Standard", "System Requirement Solution"], ans: 0 }
+                ]
+            },
+            "DWDM": {
+                default: [
+                    { q: "A Data Warehouse is generally:", options: ["Subject-oriented, integrated, time-variant, non-volatile", "Volatile and online transactional", "Application-oriented", "Temporary relational cache"], ans: 0 },
+                    { q: "Which schema contains a centralized fact table connected to multiple dimension tables?", options: ["Fact Constellation", "Star Schema", "Snowflake Schema", "Relational Schema"], ans: 1 },
+                    { q: "What is data cleaning in KDD process?", options: ["Removing noisy and inconsistent data", "Generating charts", "Deleting table structures", "Compressing databases"], ans: 0 }
+                ]
+            },
+            "IOT": {
+                default: [
+                    { q: "What is the full form of MQTT in IoT communication?", options: ["Message Queuing Telemetry Transport", "Modular Query Text Transfer", "Machine Query Transit Table", "Multiple Queue Transport Transfer"], ans: 0 },
+                    { q: "Which sensor is used to detect distance or proximity without physical contact?", options: ["Ultrasonic Sensor", "Thermistor", "LDR", "Potentiometer"], ans: 0 },
+                    { q: "Which low-power wireless standard is widely used in smart homes and IoT?", options: ["Zigbee", "Ethernet 10G", "Fiber-optic", "Token Ring"], ans: 0 }
+                ]
+            }
+        };
+
+        window.onload = function() {
+            const token = localStorage.getItem('authToken');
+            const user = JSON.parse(localStorage.getItem('currentUser') || "null");
+
+            if (!token || !user || user.role !== 'student') {
+                alert("Unauthorized! Please login as student.");
+                logout();
+                return;
+            }
+
+            document.getElementById('student-profile-name').innerText = user.name;
+            document.getElementById('student-profile-roll').innerText = `Enroll: ${user.enrollment_number}`;
+            document.getElementById('welcome-msg').innerText = `Hello, ${user.name}!`;
+
+            const branch = user.branch || "N/A";
+            const sem = user.semester ? `${user.semester}th Sem` : "N/A";
+            document.getElementById('stud-branch-val').innerText = branch;
+            document.getElementById('stud-sem-val').innerText = sem;
+
+            loadFaculties();
+            loadAssignments();
+            loadNotes();
+            checkLiveAttendanceRadar();
+
+            setInterval(loadFaculties, 8000);
+            setInterval(loadAssignments, 10000);
+            setInterval(checkLiveAttendanceRadar, 4000);
+        };
+
+        // OPEN UNIT SELECTOR MODAL
+        function openUnitSelector(subTitle, subCode) {
+            selectedSubject = subTitle;
+            selectedSubjectCode = subCode;
+            document.getElementById('modal-sub-badge').innerText = subCode;
+            document.getElementById('modal-sub-title').innerText = subTitle;
+            document.getElementById('unit-modal').classList.remove('hidden');
+        }
+
+        function closeUnitModal() {
+            document.getElementById('unit-modal').classList.add('hidden');
+        }
+
+        // START QUIZ MODAL FOR SELECTED UNIT
+        function startQuiz(unitNumber) {
+            closeUnitModal();
+            selectedUnit = unitNumber;
+            userAnswers = {};
+
+            document.getElementById('quiz-header-badge').innerText = `${selectedSubjectCode} - Unit ${unitNumber}`;
+            document.getElementById('quiz-header-title').innerText = selectedSubject;
+            document.getElementById('quiz-score-preview').innerText = "Select answers and click Submit";
+
+            const subQuestions = QUESTION_BANK[selectedSubjectCode] || {};
+            activeQuestions = subQuestions[unitNumber] || subQuestions.default || QUESTION_BANK["DCCN"].default;
+
+            const quizBody = document.getElementById('quiz-body');
+            quizBody.innerHTML = "";
+
+            activeQuestions.forEach((item, qIdx) => {
+                let optionsHtml = "";
+                item.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50/40 cursor-pointer transition-all text-xs text-slate-700">
+                            <input type="radio" name="question_${qIdx}" value="${optIdx}" onchange="recordAnswer(${qIdx}, ${optIdx})" class="accent-indigo-600">
+                            <span>${opt}</span>
+                        </label>
+                    `;
+                });
+
+                quizBody.innerHTML += `
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
+                        <p class="text-xs font-bold text-slate-800">Q${qIdx + 1}. ${item.q}</p>
+                        <div class="space-y-1.5">${optionsHtml}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('quiz-submit-btn').disabled = false;
+            document.getElementById('quiz-submit-btn').innerHTML = "Submit Test & View Score";
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+        }
+
+        function recordAnswer(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            activeQuestions.forEach((item, qIdx) => {
+                if (userAnswers[qIdx] === item.ans) {
+                    correctCount++;
+                }
+            });
+
+            const scorePreview = document.getElementById('quiz-score-preview');
+            scorePreview.innerHTML = `Result: <b class="text-emerald-600">${correctCount} / ${activeQuestions.length} Correct!</b> (${Math.round((correctCount / activeQuestions.length) * 100)}%)`;
+
+            // Highlight results
+            const quizBody = document.getElementById('quiz-body');
+            quizBody.innerHTML = "";
+
+            activeQuestions.forEach((item, qIdx) => {
+                let optionsHtml = "";
+                item.options.forEach((opt, optIdx) => {
+                    let badgeClass = "border-slate-200 bg-slate-50 text-slate-700";
+                    if (optIdx === item.ans) {
+                        badgeClass = "border-emerald-300 bg-emerald-50 text-emerald-800 font-bold";
+                    } else if (userAnswers[qIdx] === optIdx && optIdx !== item.ans) {
+                        badgeClass = "border-rose-300 bg-rose-50 text-rose-800 line-through";
+                    }
+
+                    optionsHtml += `
+                        <div class="p-2.5 rounded-xl border ${badgeClass} text-xs flex items-center justify-between">
+                            <span>${opt}</span>
+                            ${optIdx === item.ans ? '<i class="fa-solid fa-check text-emerald-600"></i>' : ''}
+                        </div>
+                    `;
+                });
+
+                quizBody.innerHTML += `
+                    <div class="p-4 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
+                        <p class="text-xs font-bold text-slate-800">Q${qIdx + 1}. ${item.q}</p>
+                        <div class="space-y-1.5">${optionsHtml}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('quiz-submit-btn').disabled = true;
+            document.getElementById('quiz-submit-btn').innerHTML = "Test Completed";
+        }
+
+        // AUTO-RADAR: Check if faculty started attendance for student's branch & sem
+        async function checkLiveAttendanceRadar() {
+            const token = localStorage.getItem('authToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/student/attendance/active-session`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const container = document.getElementById('attendance-session-state');
+                const badge = document.getElementById('terminal-live-badge');
+
+                if (res.ok && data.active_session) {
+                    currentActiveSession = data.active_session;
+                    badge.className = "text-[10px] bg-emerald-100 text-emerald-800 font-black px-2.5 py-0.5 rounded border border-emerald-300 animate-pulse";
+                    badge.innerText = "🟢 LIVE SESSION ACTIVE";
+
+                    if (data.active_session.already_marked) {
+                        container.className = "p-4 rounded-xl border border-emerald-300 bg-emerald-50/70 flex flex-col sm:flex-row items-center justify-between gap-3";
+                        container.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-emerald-900">Attendance Already Marked!</h4>
+                                    <p class="text-[11px] text-emerald-700">Taken by: <b>${data.active_session.faculty_name}</b> (${data.active_session.department})</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-emerald-700 bg-white border border-emerald-200 px-3 py-1.5 rounded-xl">
+                                Verified ✔
+                            </span>
+                        `;
+                    } else {
+                        container.className = "p-4 rounded-xl border border-indigo-300 bg-indigo-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm";
+                        container.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg shadow-md animate-bounce">
+                                    <i class="fa-solid fa-hand-point-up"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="text-xs font-black text-indigo-950">Live Attendance In Progress!</h4>
+                                        <span class="text-[9px] bg-rose-500 text-white font-bold px-1.5 py-0.2 rounded">5 Min Window</span>
+                                    </div>
+                                    <p class="text-[11px] text-indigo-800 font-medium mt-0.5">
+                                        Teacher: <b class="text-slate-900">${data.active_session.faculty_name}</b> (${data.active_session.designation}, ${data.active_session.department})
+                                    </p>
+                                </div>
+                            </div>
+                            <button onclick="markPresentLive('${data.active_session.token}')" class="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-location-crosshairs"></i> Mark Present
+                            </button>
+                        `;
+                    }
+                } else {
+                    currentActiveSession = null;
+                    badge.className = "text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded border border-slate-200";
+                    badge.innerText = "⚪ Standby";
+
+                    container.className = "p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 flex items-center justify-between";
+                    container.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-radar"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-600">No active attendance session right now</p>
+                                <p class="text-[10px] text-slate-400">Jaise hi teacher attendance chalu karenge, yahan Present button automatically active ho jayega.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error("Radar error:", err);
+            }
+        }
+
+        // ONE-CLICK MARK PRESENT (GPS CHECKED ON BACKEND)
+        function markPresentLive(sessionToken) {
+            const alertBox = document.getElementById('student-attendance-alert');
+
+            if (!navigator.geolocation) {
+                alert("GPS geolocation not supported by this browser.");
+                return;
+            }
+
+            alertBox.className = "mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center bg-blue-50 border-blue-200 text-blue-800";
+            alertBox.innerText = "Verifying physical classroom distance on server...";
+            alertBox.classList.remove('hidden');
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const authToken = localStorage.getItem('authToken');
+                try {
+                    const res = await fetch(`${API_URL}/student/attendance/mark`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                        body: JSON.stringify({
+                            token: sessionToken,
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude
+                        })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        alertBox.className = "mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center bg-emerald-50 border-emerald-200 text-emerald-800";
+                        alertBox.innerText = data.message;
+                        checkLiveAttendanceRadar();
+                    } else {
+                        alertBox.className = "mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center bg-rose-50 border-rose-200 text-rose-800";
+                        alertBox.innerText = data.message;
+                    }
+                } catch (err) {
+                    alertBox.className = "mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center bg-rose-50 border-rose-200 text-rose-800";
+                    alertBox.innerText = "Server error while marking attendance.";
+                }
+            }, () => {
+                alertBox.className = "mb-2 p-2.5 rounded-xl text-xs font-semibold border text-center bg-rose-50 border-rose-200 text-rose-800";
+                alertBox.innerText = "GPS permission denied! Please allow location to mark present.";
+            }, { enableHighAccuracy: true });
+        }
+
+        // LOAD ASSIGNMENTS
+        async function loadAssignments() {
+            const token = localStorage.getItem('authToken');
+            const container = document.getElementById('assignments-container');
+            const countBadge = document.getElementById('assignment-count');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/student/assignments`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (res.ok && data.assignments) {
+                    countBadge.innerText = `${data.assignments.length} Available`;
+
+                    if (data.assignments.length === 0) {
+                        container.innerHTML = `
+                            <div class="h-full flex flex-col items-center justify-center text-center text-slate-400 py-6">
+                                <i class="fa-regular fa-folder-open text-2xl mb-1 text-slate-300"></i>
+                                <p class="text-xs font-semibold">Abhi tak koi work assign nahi hua hai.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    let cardsHtml = "";
+                    data.assignments.forEach(item => {
+                        let badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
+                        if (item.work_type.includes("Project")) badgeColor = "bg-purple-50 text-purple-700 border-purple-200";
+                        if (item.work_type.includes("Task")) badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
+
+                        let isExpired = false;
+                        if (item.deadline) {
+                            const deadlineDate = new Date(item.deadline);
+                            deadlineDate.setHours(23, 59, 59, 999);
+                            if (deadlineDate < today) isExpired = true;
+                        }
+
+                        const statusBadgeHtml = isExpired 
+                            ? `<span class="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded whitespace-nowrap flex items-center gap-1">
+                                 <i class="fa-solid fa-circle-xmark text-slate-400"></i> Expired (${item.deadline})
+                               </span>`
+                            : `<span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded whitespace-nowrap flex items-center gap-1">
+                                 <i class="fa-regular fa-clock"></i> Due: ${item.deadline}
+                               </span>`;
+
+                        const cardBorderClass = isExpired 
+                            ? "border-slate-200 bg-slate-50/60 opacity-80" 
+                            : "border-slate-200 bg-slate-50 hover:border-indigo-300";
+
+                        cardsHtml += `
+                            <div class="p-3 border rounded-xl transition-all ${cardBorderClass}">
+                                <div class="flex items-center justify-between mb-1 gap-2">
+                                    <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded border ${badgeColor}">
+                                        ${item.work_type}
+                                    </span>
+                                    ${statusBadgeHtml}
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-xs mb-1">${item.title}</h4>
+                                ${item.description ? `<p class="text-slate-600 text-[11px] mb-1.5 leading-relaxed">${item.description}</p>` : ''}
+                                <div class="pt-1.5 border-t border-slate-200/80 text-[10px] text-slate-500 flex justify-between items-center">
+                                    <span class="font-semibold text-slate-700"><i class="fa-solid fa-user-tie text-indigo-500 mr-1"></i>${item.faculty_name}</span>
+                                    <span class="text-slate-400">${item.created_at || ''}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = cardsHtml;
+                }
+            } catch (err) {
+                console.error("Failed to load assignments:", err);
+            }
+        }
+
+        // LOAD NOTES
+        async function loadNotes() {
+            const token = localStorage.getItem('authToken');
+            const container = document.getElementById('notes-container');
+            const countBadge = document.getElementById('notes-count');
+            const label = document.getElementById('notes-target-label');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/student/notes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (res.ok && data.notes) {
+                    countBadge.innerText = `${data.notes.length} Files`;
+                    label.innerText = `Folder: notes/${data.branch}/${data.semester}`;
+
+                    if (data.notes.length === 0) {
+                        container.innerHTML = `
+                            <div class="h-full flex flex-col items-center justify-center text-center text-slate-400 py-6">
+                                <i class="fa-regular fa-file-pdf text-2xl mb-1 text-slate-300"></i>
+                                <p class="text-xs font-semibold">Is semester ke folder me abhi koi notes nahi hain.</p>
+                                <span class="text-[10px] text-slate-400 mt-0.5">Directory: notes/${data.branch}/${data.semester}/</span>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let notesHtml = "";
+                    data.notes.forEach(file => {
+                        let icon = "fa-file-pdf text-rose-500";
+                        if (['DOC', 'DOCX'].includes(file.extension)) icon = "fa-file-word text-blue-500";
+                        if (['PPT', 'PPTX'].includes(file.extension)) icon = "fa-file-powerpoint text-amber-500";
+                        if (['ZIP', 'RAR'].includes(file.extension)) icon = "fa-file-zipper text-purple-500";
+
+                        const downloadUrl = `http://127.0.0.1:5000/api/notes/download/${file.relative_path}`;
+
+                        notesHtml += `
+                            <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:border-emerald-300 transition-all flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5 overflow-hidden">
+                                    <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-base shrink-0 shadow-sm">
+                                        <i class="fa-solid ${icon}"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <h5 class="text-xs font-bold text-slate-800 truncate" title="${file.filename}">${file.filename}</h5>
+                                        <div class="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                            <span>${file.extension}</span>
+                                            <span>•</span>
+                                            <span>${file.file_size}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center shrink-0">
+                                    <a href="${downloadUrl}" target="_blank" title="View / Download" class="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold rounded-lg transition-all flex items-center gap-1">
+                                        <i class="fa-solid fa-arrow-down-to-bracket text-[10px]"></i> Open
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = notesHtml;
+                }
+            } catch (err) {
+                console.error("Failed to load notes:", err);
+            }
+        }
+
+        async function loadFaculties() {
+            try {
+                const res = await fetch(`${API_URL}/faculties`);
+                const data = await res.json();
+                if (res.ok) {
+                    allFaculties = data.faculties;
+                    filterFaculty();
+                }
+            } catch (err) {}
+        }
+
+        function filterFaculty() {
+            const search = document.getElementById('search-input').value.toLowerCase().trim();
+            const dept = document.getElementById('dept-filter').value;
+
+            const filtered = allFaculties.filter(f => {
+                const matchName = f.name.toLowerCase().includes(search);
+                const matchDept = (dept === "ALL" || f.department === dept);
+                return matchName && matchDept;
+            });
+            renderTable(filtered);
+        }
+
+        function renderTable(list) {
+            const tbody = document.getElementById('faculty-table-body');
+            document.getElementById('faculty-count').innerText = `${list.length} Found`;
+            tbody.innerHTML = "";
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400 font-medium">No faculty found.</td></tr>`;
+                return;
+            }
+
+            list.forEach(f => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 border-b border-slate-100";
+                let badge = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600">⚪ Leave</span>`;
+                if (f.current_status === 'Free') badge = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">🟢 Free in Cabin</span>`;
+                if (f.current_status === 'In Class') badge = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">🔴 In Class</span>`;
+                if (f.current_status === 'In Meeting') badge = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">🟡 In Meeting</span>`;
+
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-slate-900 font-bold">${f.name} <span class="block text-[11px] font-medium text-slate-400">${f.designation}</span></td>
+                    <td class="py-4 px-6 text-slate-500">${f.department}</td>
+                    <td class="py-4 px-6"><i class="fa-solid fa-door-open text-slate-400 mr-1.5 text-xs"></i>${f.cabin_number}</td>
+                    <td class="py-4 px-6">${badge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

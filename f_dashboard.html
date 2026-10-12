@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patna-7 | Faculty Console</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-slate-800 leading-none">GP PATNA-7</h1>
+                        <span class="text-[10px] text-emerald-600 font-bold tracking-wider uppercase">Faculty Console</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p id="faculty-profile-name" class="text-sm font-bold text-slate-800">Prof. Loading...</p>
+                        <p id="faculty-profile-dept" class="text-[11px] text-slate-500 font-medium">Department</p>
+                    </div>
+                    <button onclick="logout()" class="px-3.5 py-2 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-200 cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket mr-1.5"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-gradient-to-r from-emerald-700 to-indigo-900 rounded-3xl p-6 md:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+            <h2 id="welcome-msg" class="text-2xl md:text-3xl font-extrabold tracking-tight">Welcome, Professor!</h2>
+            <p class="text-emerald-100/80 text-sm mt-1">Apna live status, batch-targeted attendance aur assignments yahan se manage karein.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- LEFT COLUMN (2 Cols) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- LIVE STATUS SWITCHER -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-[216px] flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600">
+                            <i class="fa-solid fa-signal text-emerald-600 mr-1.5"></i>Set Your Current Live Status
+                        </h3>
+                        <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded border border-emerald-100">Live Pulse</span>
+                    </div>
+
+                    <div id="status-alert" class="hidden py-1 px-2 rounded-lg text-[11px] font-semibold text-center bg-emerald-50 border border-emerald-200 text-emerald-800"></div>
+
+                    <div class="relative w-full h-[150px]">
+                        <button onclick="updateStatus('In Class')" id="status-btn-In-Class" class="absolute top-1 left-2 w-[110px] h-[38px] rounded-full border-2 border-slate-200 bg-slate-50 hover:border-rose-400 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer shadow-sm">
+                            <span class="text-xs">🔴</span>
+                            <span class="font-bold text-slate-800 text-[11px] whitespace-nowrap">In Class</span>
+                        </button>
+
+                        <button onclick="updateStatus('In Meeting')" id="status-btn-In-Meeting" class="absolute top-1 right-2 w-[110px] h-[38px] rounded-full border-2 border-slate-200 bg-slate-50 hover:border-amber-400 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer shadow-sm">
+                            <span class="text-xs">🟡</span>
+                            <span class="font-bold text-slate-800 text-[11px] whitespace-nowrap">In Meeting</span>
+                        </button>
+
+                        <button onclick="updateStatus('Free')" id="status-btn-Free" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125px] h-[40px] rounded-full border-2 border-slate-200 bg-slate-50 hover:border-emerald-400 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer shadow-sm">
+                            <span class="text-xs">🟢</span>
+                            <span class="font-bold text-slate-800 text-[11px] whitespace-nowrap">Free in Cabin</span>
+                        </button>
+
+                        <button onclick="updateStatus('On Leave')" id="status-btn-On-Leave" class="absolute bottom-1 left-2 w-[110px] h-[38px] rounded-full border-2 border-slate-200 bg-slate-50 hover:border-slate-400 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer shadow-sm">
+                            <span class="text-xs">⚪</span>
+                            <span class="font-bold text-slate-800 text-[11px] whitespace-nowrap">On Leave</span>
+                        </button>
+
+                        <button onclick="updateStatus('Other')" id="status-btn-Other" class="absolute bottom-1 right-2 w-[110px] h-[38px] rounded-full border-2 border-slate-200 bg-slate-50 hover:border-indigo-400 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer shadow-sm">
+                            <span class="text-xs">🟣</span>
+                            <span class="font-bold text-slate-800 text-[11px] whitespace-nowrap">Other</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GEOFENCED ATTENDANCE GENERATOR -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">
+                            <i class="fa-solid fa-location-dot text-indigo-600 mr-2"></i>Smart Geofenced Attendance
+                        </h3>
+                        <span class="text-[10px] bg-indigo-50 text-indigo-700 font-bold px-2.5 py-0.5 rounded border border-indigo-100">Live Auto-Radar</span>
+                    </div>
+
+                    <div id="attendance-status-alert" class="hidden mb-4 p-3 rounded-xl text-xs font-semibold text-center"></div>
+
+                    <!-- SELECT TARGET BRANCH & SEMESTER -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-4">
+                        <p class="text-xs font-bold text-slate-600 mb-2.5">
+                            <i class="fa-solid fa-filter text-indigo-500 mr-1.5"></i>Kis batch ke liye attendance chalu karni hai?
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Target Branch</label>
+                                <select id="token-branch" class="w-full text-xs font-semibold bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">-- Choose Branch --</option>
+                                    <option value="CSE">Computer Science & Engg (CSE)</option>
+                                    <option value="Civil">Civil Engg.</option>
+                                    <option value="Electrical">Electrical Engg.</option>
+                                    <option value="Mechanical">Mechanical Engg.</option>
+                                    <option value="Electronics">Electronics Engg.</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Target Semester</label>
+                                <select id="token-sem" class="w-full text-xs font-semibold bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">-- Choose Semester --</option>
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">3rd Semester</option>
+                                    <option value="4">4th Semester</option>
+                                    <option value="5">5th Semester</option>
+                                    <option value="6">6th Semester</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generateAttendanceLink()" id="btn-generate-token" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all text-sm cursor-pointer flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-satellite-dish"></i> Start Live Attendance (Students Can Click "Mark Present")
+                    </button>
+
+                    <!-- ACTIVE STATE DISPLAY -->
+                    <div id="active-token-box" class="hidden p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3 mt-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-100 pb-2.5">
+                            <div>
+                                <span class="text-[11px] font-bold text-emerald-800 uppercase block">🟢 Live Attendance Session Active</span>
+                                <p class="text-xs text-slate-600 mt-0.5">Students ke dashboard par "Mark Present" button automatically show ho raha hai.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 font-bold block uppercase">Active For</span>
+                                <span id="token-batch-info" class="text-xs font-extrabold text-indigo-900 bg-white border border-indigo-100 px-2.5 py-0.5 rounded">CSE - 6th Sem</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-500 font-medium">Session code: <b id="token-code-val" class="font-mono text-slate-700">None</b></span>
+                            <span class="font-bold text-rose-600"><i class="fa-solid fa-stopwatch mr-1 text-amber-500"></i>Expires in: <span id="token-timer-val">05:00</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUPED ATTENDANCE SECTION -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">
+                            <i class="fa-solid fa-layer-group text-emerald-600 mr-2"></i>Token-Wise Verified Attendance Batches
+                        </h3>
+                        <span id="prof-total-batches" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold">0 Batches</span>
+                    </div>
+
+                    <div id="session-batches-container" class="space-y-4">
+                        <div class="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-400 font-medium">
+                            No attendance sessions generated yet.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN (PROFILE & ASSIGN WORK) -->
+            <div class="space-y-6">
+                <!-- PROFILE CARD -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 h-[216px] flex flex-col justify-between">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-user-tie text-emerald-600 mr-1.5"></i>My Profile
+                    </h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span class="text-slate-400">Faculty ID:</span>
+                            <span id="prof-id-val" class="font-bold text-slate-700">---</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span class="text-slate-400">Designation:</span>
+                            <span id="prof-desg-val" class="font-bold text-slate-700">---</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span class="text-slate-400">Cabin No:</span>
+                            <span id="prof-cabin-val" class="font-bold text-slate-700">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Email:</span>
+                            <span id="prof-email-val" class="text-[11px] font-bold text-slate-600 truncate max-w-[170px]">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASSIGN PRACTICAL / PROJECT SECTION -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">
+                            <i class="fa-solid fa-file-pen text-indigo-600 mr-2"></i>Assign Work / Practical
+                        </h3>
+                        <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold border border-indigo-100">Targeted</span>
+                    </div>
+
+                    <div id="assignment-alert" class="hidden mb-3 p-2.5 rounded-xl text-xs font-semibold text-center"></div>
+
+                    <form id="assignment-form" onsubmit="handleAssignWork(event)" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Branch</label>
+                                <select id="assign-branch" required class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">Select Branch</option>
+                                    <option value="CSE">CSE</option>
+                                    <option value="Civil">Civil</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Mechanical">Mechanical</option>
+                                    <option value="Electronics">Electronics</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Semester</label>
+                                <select id="assign-sem" required class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">Select Sem</option>
+                                    <option value="1">1st Sem</option>
+                                    <option value="2">2nd Sem</option>
+                                    <option value="3">3rd Sem</option>
+                                    <option value="4">4th Sem</option>
+                                    <option value="5">5th Sem</option>
+                                    <option value="6">6th Sem</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Category</label>
+                            <select id="assign-type" required class="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Practical Assignment">Assignment</option>
+                                <option value="Minor Project">Lab/Practicle</option>
+                                <option value="Major Project">Project Work</option>
+                                <option value="Task/Case Study">Task / Case Study</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Title / Subject</label>
+                            <input id="assign-title" type="text" placeholder="e.g. Lab Experiment 4: DBMS Normalization" required class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Due Date</label>
+                            <input id="assign-deadline" type="date" required class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        
+                        <button type="submit" id="assign-submit-btn" class="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow transition-all cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-emerald-400"></i> Publish to Branch & Sem
+                        </button>
+                    </form>
+
+                    <!-- PUBLISHED ASSIGNMENTS LIST -->
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">
+                                <i class="fa-solid fa-list-check text-indigo-500 mr-1.5"></i>My Published Work
+                            </h4>
+                            <span id="faculty-assignment-count" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">0 Works</span>
+                        </div>
+                        <div id="faculty-assignments-list" class="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
+                            <p class="text-xs text-slate-400 text-center py-4">No assignments published yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+        let timerInterval = null;
+
+        window.onload = function() {
+            const token = localStorage.getItem('authToken');
+            const user = JSON.parse(localStorage.getItem('currentUser') || "null");
+
+            if (!token || !user || user.role !== 'faculty') {
+                alert("Unauthorized! Please login as faculty.");
+                logout();
+                return;
+            }
+
+            document.getElementById('faculty-profile-name').innerText = user.name;
+            document.getElementById('faculty-profile-dept').innerText = user.department;
+            document.getElementById('welcome-msg').innerText = `Welcome back, ${user.name}!`;
+
+            document.getElementById('prof-id-val').innerText = user.faculty_code || "FAC-XXXX";
+            document.getElementById('prof-desg-val').innerText = user.designation;
+            document.getElementById('prof-cabin-val').innerText = user.cabin_number;
+            document.getElementById('prof-email-val').innerText = user.email;
+
+            highlightActiveBtn(user.current_status || "Free");
+            loadAttendanceLogs();
+            loadFacultyAssignments();
+            setInterval(loadAttendanceLogs, 6000);
+        };
+
+        function generateAttendanceLink() {
+            const alertBox = document.getElementById('attendance-status-alert');
+            const branch = document.getElementById('token-branch').value;
+            const sem = document.getElementById('token-sem').value;
+
+            if (!branch || !sem) {
+                alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center bg-rose-50 border border-rose-200 text-rose-800";
+                alertBox.innerText = "Kripya Target Branch aur Semester select karein!";
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            if (!navigator.geolocation) {
+                alert("Geolocation not supported by this browser.");
+                return;
+            }
+
+            alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center bg-indigo-50 border border-indigo-200 text-indigo-800";
+            alertBox.innerText = `Fetching GPS coordinates for ${branch} (Sem ${sem})...`;
+            alertBox.classList.remove('hidden');
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const token = localStorage.getItem('authToken');
+                try {
+                    const res = await fetch(`${API_URL}/faculty/attendance/create`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ 
+                            lat: pos.coords.latitude, 
+                            lng: pos.coords.longitude,
+                            branch: branch,
+                            semester: sem
+                        })
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center bg-emerald-50 border border-emerald-200 text-emerald-800";
+                        alertBox.innerText = `Live session active! Students of ${branch} (Sem ${sem}) can now mark present.`;
+                        document.getElementById('active-token-box').classList.remove('hidden');
+                        document.getElementById('token-code-val').innerText = data.token;
+                        document.getElementById('token-batch-info').innerText = `${branch} - ${sem}th Sem`;
+                        startTimer(new Date(data.expires_at).getTime());
+                    } else {
+                        alertBox.innerText = data.message || "Failed to create session";
+                    }
+                } catch (err) {
+                    alertBox.innerText = "Server communication failure.";
+                }
+            }, () => {
+                alertBox.className = "mb-4 p-3 rounded-xl text-xs font-semibold text-center bg-rose-50 border border-rose-200 text-rose-800";
+                alertBox.innerText = "Location permission is required to create attendance geofence!";
+            }, { enableHighAccuracy: true });
+        }
+
+        function startTimer(expiry) {
+            clearInterval(timerInterval);
+            const val = document.getElementById('token-timer-val');
+            timerInterval = setInterval(() => {
+                const left = expiry - Date.now();
+                if (left <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('active-token-box').classList.add('hidden');
+                } else {
+                    const m = Math.floor(left / 60000);
+                    const s = Math.floor((left % 60000) / 1000);
+                    val.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        async function loadAttendanceLogs() {
+            const token = localStorage.getItem('authToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/faculty/attendance/grouped-sessions`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (res.ok && data.sessions) {
+                    const container = document.getElementById('session-batches-container');
+                    document.getElementById('prof-total-batches').innerText = `${data.sessions.length} Batches`;
+
+                    if (data.sessions.length === 0) {
+                        container.innerHTML = `
+                            <div class="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-400 font-medium">
+                                No attendance sessions generated yet.
+                            </div>`;
+                        return;
+                    }
+
+                    container.innerHTML = "";
+
+                    data.sessions.forEach(session => {
+                        const statusBadge = session.is_expired 
+                            ? `<span class="bg-slate-100 text-slate-500 border border-slate-200 px-2 py-0.5 rounded text-[11px] font-bold">⚪ Expired</span>`
+                            : `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[11px] font-bold">🟢 Active</span>`;
+
+                        let studentRowsHtml = "";
+                        if (session.students.length === 0) {
+                            studentRowsHtml = `<tr><td colspan="5" class="py-4 text-center text-slate-400 text-xs font-medium">No student has marked attendance for this token yet.</td></tr>`;
+                        } else {
+                            session.students.forEach(st => {
+                                studentRowsHtml += `
+                                    <tr class="hover:bg-slate-50/70 border-b border-slate-100 h-10">
+                                        <td class="py-2 px-5 font-bold text-slate-800 text-xs">${st.student_name}</td>
+                                        <td class="py-2 px-5 text-blue-600 font-mono text-xs">${st.enrollment_number}</td>
+                                        <td class="py-2 px-5 text-slate-500 text-xs">${st.branch}</td>
+                                        <td class="py-2 px-5 text-slate-400 text-xs font-mono">${st.timestamp}</td>
+                                        <td class="py-2 px-5"><span class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded text-xs font-mono font-bold">${st.recorded_distance_m}m</span></td>
+                                    </tr>
+                                `;
+                            });
+                        }
+
+                        const batchCard = document.createElement('div');
+                        batchCard.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden";
+                        batchCard.innerHTML = `
+                            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div class="flex items-center gap-2.5 flex-wrap">
+                                    <span class="font-mono text-sm font-black bg-indigo-50 border border-indigo-200 text-indigo-700 px-3 py-1 rounded-xl">
+                                        <i class="fa-solid fa-key mr-1.5 text-xs"></i>${session.token}
+                                    </span>
+                                    <span class="text-xs font-bold text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg">
+                                        <i class="fa-solid fa-graduation-cap text-indigo-500 mr-1"></i>${session.branch} - ${session.semester}th Sem
+                                    </span>
+                                    ${statusBadge}
+                                    <span class="text-xs font-bold text-slate-500">Verified: <b class="text-slate-800">${session.total_students}</b></span>
+                                </div>
+                                <button onclick="deleteSession(${session.session_id})" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs font-bold cursor-pointer transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                </button>
+                            </div>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-white border-b border-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-wider sticky top-0 z-10">
+                                            <th class="py-2.5 px-5">Student Name</th>
+                                            <th class="py-2.5 px-5">Enrollment</th>
+                                            <th class="py-2.5 px-5">Branch</th>
+                                            <th class="py-2.5 px-5">Logged Time</th>
+                                            <th class="py-2.5 px-5">Proximity</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="max-h-[126px] overflow-y-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <tbody class="divide-y divide-slate-100">
+                                            ${studentRowsHtml}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(batchCard);
+                    });
+                }
+            } catch (err) {
+                console.error("Grouped Polling Error:", err);
+            }
+        }
+
+        async function deleteSession(sessionId) {
+            if (!confirm("Are you sure you want to delete this token session?")) return;
+            const token = localStorage.getItem('authToken');
+            try {
+                const res = await fetch(`${API_URL}/faculty/attendance/session/${sessionId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadAttendanceLogs();
+                } else {
+                    alert(data.message || "Failed to delete session");
+                }
+            } catch (err) {
+                alert("Server error while deleting session.");
+            }
+        }
+
+        async function handleAssignWork(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('authToken');
+            const alertBox = document.getElementById('assignment-alert');
+            const submitBtn = document.getElementById('assign-submit-btn');
+
+            const payload = {
+                branch: document.getElementById('assign-branch').value,
+                semester: document.getElementById('assign-sem').value,
+                work_type: document.getElementById('assign-type').value,
+                title: document.getElementById('assign-title').value,
+                deadline: document.getElementById('assign-deadline').value
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing...`;
+
+            try {
+                const res = await fetch(`${API_URL}/faculty/assignments/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alertBox.className = "mb-3 p-2.5 rounded-xl text-xs font-semibold text-center bg-emerald-50 border border-emerald-200 text-emerald-800";
+                    alertBox.innerText = "Work successfully published to selected batch!";
+                    alertBox.classList.remove('hidden');
+                    document.getElementById('assignment-form').reset();
+                    loadFacultyAssignments();
+                    setTimeout(() => alertBox.classList.add('hidden'), 3500);
+                } else {
+                    alertBox.className = "mb-3 p-2.5 rounded-xl text-xs font-semibold text-center bg-rose-50 border border-rose-200 text-rose-800";
+                    alertBox.innerText = data.message || "Failed to publish assignment.";
+                    alertBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                alertBox.className = "mb-3 p-2.5 rounded-xl text-xs font-semibold text-center bg-rose-50 border border-rose-200 text-rose-800";
+                alertBox.innerText = "Network/Server error while publishing work.";
+                alertBox.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-emerald-400"></i> Publish to Branch & Sem`;
+            }
+        }
+
+        async function loadFacultyAssignments() {
+            const token = localStorage.getItem('authToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/faculty/assignments`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const container = document.getElementById('faculty-assignments-list');
+                const badge = document.getElementById('faculty-assignment-count');
+
+                if (res.ok && data.assignments) {
+                    badge.innerText = `${data.assignments.length} Works`;
+                    if (data.assignments.length === 0) {
+                        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No assignments published yet.</p>`;
+                        return;
+                    }
+
+                    container.innerHTML = "";
+                    data.assignments.forEach(item => {
+                        const itemCard = document.createElement('div');
+                        itemCard.className = "p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start justify-between gap-2";
+                        itemCard.innerHTML = `
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700">${item.work_type}</span>
+                                    <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded">${item.branch} - ${item.semester}th Sem</span>
+                                </div>
+                                <h5 class="text-xs font-bold text-slate-800 leading-snug">${item.title}</h5>
+                                <p class="text-[10px] text-rose-600 font-semibold"><i class="fa-regular fa-clock mr-1"></i>Due: ${item.deadline}</p>
+                            </div>
+                            <button onclick="deleteAssignment(${item.id})" title="Delete Assignment" class="text-rose-500 hover:text-rose-700 p-1.5 hover:bg-rose-50 rounded-lg transition-all cursor-pointer">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        `;
+                        container.appendChild(itemCard);
+                    });
+                }
+            } catch (err) {
+                console.error("Error loading faculty assignments:", err);
+            }
+        }
+
+        async function deleteAssignment(assignmentId) {
+            if (!confirm("Are you sure you want to delete this assignment permanently?")) return;
+            const token = localStorage.getItem('authToken');
+            try {
+                const res = await fetch(`${API_URL}/faculty/assignments/${assignmentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadFacultyAssignments();
+                } else {
+                    alert(data.message || "Failed to delete assignment.");
+                }
+            } catch (err) {
+                alert("Server error while deleting assignment.");
+            }
+        }
+
+        async function updateStatus(status) {
+            const token = localStorage.getItem('authToken');
+            try {
+                const res = await fetch(`${API_URL}/faculty/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    highlightActiveBtn(status);
+                    const b = document.getElementById('status-alert');
+                    b.innerText = `Status successfully changed to "${status}"`;
+                    b.classList.remove('hidden');
+                    setTimeout(() => b.classList.add('hidden'), 2500);
+                }
+            } catch (err) {
+                alert("Failed to update status on server.");
+            }
+        }
+
+        function highlightActiveBtn(status) {
+            const basePositions = {
+                'In Class': 'absolute top-1 left-2 w-[110px] h-[38px]',
+                'In Meeting': 'absolute top-1 right-2 w-[110px] h-[38px]',
+                'Free': 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125px] h-[40px]',
+                'On Leave': 'absolute bottom-1 left-2 w-[110px] h-[38px]',
+                'Other': 'absolute bottom-1 right-2 w-[110px] h-[38px]'
+            };
+
+            const styles = {
+                'Free': { border: 'border-emerald-600', bg: 'bg-emerald-100/70', shadow: 'shadow-md ring-2 ring-emerald-400' },
+                'In Class': { border: 'border-rose-600', bg: 'bg-rose-100/70', shadow: 'shadow-md ring-2 ring-rose-400' },
+                'In Meeting': { border: 'border-amber-600', bg: 'bg-amber-100/70', shadow: 'shadow-md ring-2 ring-amber-400' },
+                'On Leave': { border: 'border-slate-600', bg: 'bg-slate-200/80', shadow: 'shadow-md ring-2 ring-slate-400' },
+                'Other': { border: 'border-indigo-600', bg: 'bg-indigo-100/70', shadow: 'shadow-md ring-2 ring-indigo-400' }
+            };
+
+            Object.keys(basePositions).forEach(key => {
+                const id = `status-btn-${key.replace(' ', '-')}`;
+                const el = document.getElementById(id);
+                if (el) {
+                    const pos = basePositions[key];
+                    if (key === status) {
+                        const s = styles[key];
+                        el.className = `${pos} rounded-full border-2 ${s.border} ${s.bg} ${s.shadow} flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer font-black scale-105`;
+                    } else {
+                        el.className = `${pos} rounded-full border-2 border-slate-200 bg-slate-50 hover:border-slate-300 flex items-center justify-center gap-1.5 px-2 transition-all cursor-pointer opacity-85 hover:opacity-100 shadow-sm`;
+                    }
+                }
+            });
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
