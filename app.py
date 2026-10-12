@@ -12,11 +12,15 @@ app = Flask(__name__)
 CORS(app)
 
 JWT_SECRET = "gpp7_super_secret_key_patna_2026"
+import os
+
+# Password code me likhne ke bajaye Environment Variable se padhein
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Sarvjit@71#",  # <-- Apna MySQL password dalein
-    "database": "gpp7_portal"
+    "host": os.environ.get("DB_HOST", "gpp-7-sarvjitkumarray9-e1b3.j.aivencloud.com"),       
+    "user": os.environ.get("DB_USER", "avnadmin"),                        
+    "password": os.environ.get("DB_PASSWORD", ""),                       
+    "database": os.environ.get("DB_NAME", "defaultdb"),                  
+    "port": int(os.environ.get("DB_PORT", 17322))                        
 }
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
