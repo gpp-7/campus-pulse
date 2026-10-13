@@ -741,7 +741,7 @@
                         if (['PPT', 'PPTX'].includes(file.extension)) icon = "fa-file-powerpoint text-amber-500";
                         if (['ZIP', 'RAR'].includes(file.extension)) icon = "fa-file-zipper text-purple-500";
 
-                        const downloadUrl = `http://127.0.0.1:5000/api/notes/download/${file.relative_path}`;
+                        const downloadUrl = `https://campus-pulse-gpp-7.onrender.com/api/notes/download/${file.relative_path}`;
 
                         notesHtml += `
                             <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:border-emerald-300 transition-all flex items-center justify-between gap-2.5">
